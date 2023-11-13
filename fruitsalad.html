@@ -33,63 +33,59 @@
 	<div id="list"></div>
 	
 	<script>
-		let products = [];
-		let minPrice = Number.MAX_VALUE;
-		let maxPrice = Number.MIN_VALUE;
+		const fruitList = [];
 		let minProduct = "";
 		let maxProduct = "";
 
 		// Function called by pushing the button
 		function add() {
 			// Creating the variables
-			let product = document.getElementById("product").value;
+			let fruit = document.getElementById("product").value;
 			let price = document.getElementById("price").value;
 
 			// Adding product-price pair to products-list
-			let obj = {"product" : product, "price": price};
-			products.push(obj);
+			let listItem = {name: fruit, price: price};
+			fruitList.push(listItem);
 
 			// Checking the list
-			console.log(products);
+			console.log(fruitList);
+
+			// Calling for function to finding the cheapest and most expensive products
+			minMaxProduct();
 
 			// Calling for function to list the products
-			showList();
+			list();
 		}
 
-		// Function finding the key with certain value
-		function getKeyByValue(object, value) {
-			return Object.keys(object).find(key => object[key] === value);
-		}
-
-		function showList() {
+		function list() {
 			// Variable where the list is written as string
-			let productList = "";
+			let listingFruits = "";
 
 			// Listing the products
-			products.forEach(key =>
-				productList += key.product + " (" + key.price + " euros)<br>"
+			fruitList.forEach(fruit =>
+				listingFruits += fruit.name + " (" + fruit.price + " euros)<br>"
 			);
 
-			// Adding all the prices to a new list
-			const prices = products.map(product => product.price);
-
-			// Finding the cheapest and most expensive price from the prices-list
-			maxPrice = Math.max(...prices);
-			minPrice = Math.min(...prices);
-
-			// Finding the products that match the max and min prices
-			maxProduct = getKeyByValue(products, maxPrice);
-			console.log("maxProduct: " + maxProduct);
-			minProduct = getKeyByValue(products, minPrice);
-
 			// Checking the results
-			console.log("Halvin tuote: " + minProduct);
-			console.log("Halvin hinta: " + minPrice);
-			console.log("Kallein tuote: " + maxProduct);
-			console.log("Kallein hinta: " + maxPrice);
+			console.log("Cheapest product: " + minProduct.name);
+			console.log("Cheapest price: " + minProduct.price);
+			console.log("Most expensive product: " + maxProduct.name);
+			console.log("Most expensive price: " + maxProduct.price);
 
 			// Listing the products on the html page
-			document.getElementById("list").innerHTML = "<p>" + productList + "</p> <p>The priciest product is " + maxProduct + " (" + maxPrice + " euros)</p><p>The cheapest product is " + minProduct + " (" + minPrice + " euros)";
+			document.getElementById("list").innerHTML = "<p>" + listingFruits + "</p> <p>The priciest product is " + maxProduct.name + " (" + maxProduct.price + " euros)</p><p>The cheapest product is " + minProduct.name + " (" + minProduct.price + " euros)";
+		}
+
+		function minMaxProduct() {
+			// Finding the most expensive product
+			maxProduct = fruitList.reduce(function(accumulator, currentValue){
+				return (accumulator > currentValue ? accumulator : currentValue);
+			});
+
+			// Finding the cheapest product
+			minProduct = fruitList.reduce(function(accumulator, currentValue){
+				return (accumulator < currentValue ? accumulator : currentValue);
+			});
 		}
 	</script>
 </body>
