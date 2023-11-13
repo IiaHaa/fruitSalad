@@ -79,12 +79,13 @@
 		function minMaxProduct() {
 			// Finding the most expensive product
 			maxProduct = fruitList.reduce(function(accumulator, currentValue){
-				return (accumulator > currentValue ? accumulator : currentValue);
+				return (accumulator.price > currentValue.price ? accumulator : currentValue);
 			});
 
 			// Finding the cheapest product
 			minProduct = fruitList.reduce(function(accumulator, currentValue){
-				return (accumulator < currentValue ? accumulator : currentValue);
+				return (accumulator.price < currentValue.price ? accumulator : currentValue);
+			
 			});
 		}
 	</script>
