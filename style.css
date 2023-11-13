@@ -1,0 +1,12 @@
+body {
+    color: #000000;
+    background-color: #e9dccb;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 0px;
+}
+
+label {
+    display: block;
+    width: 4em;
+    float: left; 
+}
