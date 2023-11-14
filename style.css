@@ -2,11 +2,27 @@ body {
     color: #000000;
     background-color: #e9dccb;
     font-family: 'Montserrat', sans-serif;
-    margin-top: 0px;
+    font-size: 16px;
+    margin: 30px;
 }
 
 label {
     display: block;
     width: 4em;
     float: left; 
+}
+
+input {
+    margin-bottom: 10px;
+    size: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+#msg {
+    margin-top: 25px;
+    color: #ad1717;
 }

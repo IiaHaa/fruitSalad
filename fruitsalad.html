@@ -1,93 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="author" content="Iia Haavanoksa">
-	<link href="style.css" rel="stylesheet" type="text/css">
+  <meta charset="UTF-8">
+  <meta name="author" content="Iia Haavanoksa">
+  <link href="style.css" rel="stylesheet" type="text/css">
 
-	<title>Fruit Salad Assignment</title>
-
-<style>
-
-</style>
+  <title>Fruit Salad Assignment</title>
 
 </head>
-<body> 
-	<h3>Shopping List for Fruit Salad</h3>
 
-	<form>
-		<p>
-			<label>Product:</label> 
-			<input type="text" id="product" size="20">
-		</p>
-		<p>
-			<label>Price:</label> 
-			<input type="number" id="price" size="20">
-		</p>
-		<p>
-			<input type="button" value="Add" onclick="add()">
-		</p>
-	</form>
+<body>
+  <!-- Form -->
+  <form>
+	<h1 id="form title">My Shopping List for Fruit Salad</h1>
 
-	<!-- The list goes here -->
-	<div id="list"></div>
+    <label for="product">Product:</label> 
+    <input type="text" id="product">
+	<br>
+    <label for="price">Price:</label> 
+    <input type="number" id="price" step="1">
+	<br>
+    <input type="button" value="Add" onclick="add()">
+  </form>
+
+  <!-- The list goes here -->
+  <div id="list"></div>
+
+  <!-- Message -->
+  <div id="msg"></div>
 	
-	<script>
-		const fruitList = [];
-		let minProduct = "";
-		let maxProduct = "";
+  <script>
+    const fruitList = [];
 
-		// Function called by pushing the button
-		function add() {
-			// Creating the variables
-			let fruit = document.getElementById("product").value;
-			let price = document.getElementById("price").value;
+    // Function called by pushing the button
+    function add() {
+      // Creating the variables
+      let fruit = document.getElementById("product").value;
+      let price = Number(document.getElementById("price").value);
 
-			// Adding product-price pair to products-list
-			let listItem = {name: fruit, price: price};
-			fruitList.push(listItem);
+	  // Checking that fruit variable is not empty
+	  if (fruit) {
+		// Adding product-price pair to products-list
+		let listItem = {name: fruit, price: price};
+        fruitList.push(listItem);
 
-			// Checking the list
-			console.log(fruitList);
+        // Calling for function to finding the cheapest and most expensive products
+        const minMaxProducts = minMaxProduct(fruitList);
 
-			// Calling for function to finding the cheapest and most expensive products
-			minMaxProduct();
+        // Calling for function to list the items on html page
+        list(minMaxProducts);
 
-			// Calling for function to list the products
-			list();
-		}
+		// Emptying the potential error message
+		document.getElementById("msg").innerHTML = ""
+	  } else {
+		document.getElementById("msg").innerHTML = "Please provide a product";
+	  }
+    }
 
-		function list() {
-			// Variable where the list is written as string
-			let listingFruits = "";
+    function minMaxProduct(fList) {
+	  const products = [];
 
-			// Listing the products
-			fruitList.forEach(fruit =>
-				listingFruits += fruit.name + " (" + fruit.price + " euros)<br>"
-			);
+	  // Finding the cheapest product
+      minProduct = fList.reduce(function(accumulator, currentValue){
+        return (accumulator.price < currentValue.price ? accumulator : currentValue);
+      });
+	  console.log("minProduct: " + minProduct.name + ", " + minProduct.price)
 
-			// Checking the results
-			console.log("Cheapest product: " + minProduct.name);
-			console.log("Cheapest price: " + minProduct.price);
-			console.log("Most expensive product: " + maxProduct.name);
-			console.log("Most expensive price: " + maxProduct.price);
+      // Finding the most expensive product
+      maxProduct = fList.reduce(function(accumulator, currentValue){
+        return (accumulator.price > currentValue.price ? accumulator : currentValue);
+      });
 
-			// Listing the products on the html page
-			document.getElementById("list").innerHTML = "<p>" + listingFruits + "</p> <p>The priciest product is " + maxProduct.name + " (" + maxProduct.price + " euros)</p><p>The cheapest product is " + minProduct.name + " (" + minProduct.price + " euros)";
-		}
+	  // Adding the cheapest & priciest product to a list
+	  products.push(minProduct, maxProduct);
 
-		function minMaxProduct() {
-			// Finding the most expensive product
-			maxProduct = fruitList.reduce(function(accumulator, currentValue){
-				return (accumulator.price > currentValue.price ? accumulator : currentValue);
-			});
+	  return products;
+    }
 
-			// Finding the cheapest product
-			minProduct = fruitList.reduce(function(accumulator, currentValue){
-				return (accumulator.price < currentValue.price ? accumulator : currentValue);
-			
-			});
-		}
-	</script>
+	function list(minMaxProducts) {
+      // Variable where the list is written as string
+      let listingFruits = "";
+
+      // Listing the products
+      fruitList.forEach(fruit =>
+        listingFruits += "<li><strong>" + fruit.name + "</strong> (" + fruit.price + " euros)</li>"
+      );
+
+      // Listing the products on the html page
+      document.getElementById("list").innerHTML = "<ul>" + listingFruits + "<p>The cheapest product is <strong>" + minMaxProducts[0].name + " (" + minMaxProducts[0].price + " euros)</strong></p><p>The priciest product is <strong>" + minMaxProducts[1].name  + " (" + minMaxProducts[1].price + " euros)</strong>";
+    }
+  </script>
 </body>
 </html>
